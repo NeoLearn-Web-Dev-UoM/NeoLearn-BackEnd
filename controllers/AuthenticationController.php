@@ -1,7 +1,7 @@
 <?php
 
-require_once 'repos/StudentDatabase.php';
-require_once 'repos/InstructorDatabase.php';
+require_once 'db/StudentDatabase.php';
+require_once 'db/InstructorDatabase.php';
 
 class AuthenticationController
 {
