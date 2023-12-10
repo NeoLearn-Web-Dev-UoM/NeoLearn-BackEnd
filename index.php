@@ -18,7 +18,7 @@ $conn = configDatabase();
 include 'config/RoutesConfig.php';
 
 $routes = [
-    // STUDENT ENDPOINTS
+    // -------------------------------- STUDENT ENDPOINTS --------------------------------
     // Get All Students
     'GET /neolearn-backend/index.php/students' => 'StudentController@getAll',
 
@@ -41,14 +41,36 @@ $routes = [
     'GET /neolearn-backend/index.php/students/search/{studentId}/courses' => 'StudentController@getCourses',
 
     // Add a course to a student
-    'PUT /neolearn-backend/index.php/students/courses/add' => 'StudentController@addCourseToStudent', // Add a course to a user
+    'PUT /neolearn-backend/index.php/students/courses/add' => 'StudentController@addCourseToStudent',
 
-    // AUTH
-    'POST /neolearn-backend/index.php/auth/student/login' => 'AuthenticationController@loginStudent', // Login
+    // Remove a course from a student
+    'PUT /neolearn-backend/index.php/students/courses/remove' => 'StudentController@removeCourseFromStudent',
+
+    // Authentication for student (login)
+    'POST /neolearn-backend/index.php/auth/student/login' => 'AuthenticationController@loginStudent',
+
+    // -------------------------------- INSTRUCTOR ENDPOINTS --------------------------------
+
+    // Here we will add the instructor endpoints
+    // The instructor endpoints will be similar to the student endpoints
+    // Based on what we need to do, we will add the corresponding endpoints
+    // We also need to add the corresponding controller class and methods
+    // Example:
+    // 'GET /neolearn-backend/index.php/instructors' => 'InstructorController@getAll',
+
+
+    // -------------------------------- COURSE ENDPOINTS ------------------------------------
+
+    // Here we will add the course endpoints
+    // The course endpoints will be similar to the student endpoints
+    // Based on what we need to do, we will add the corresponding endpoints
+    // We also need to add the corresponding controller class and methods
+    // Example:
+    // 'GET /neolearn-backend/index.php/courses' => 'CourseController@getAll',
 ];
 
 // Match the route and call the corresponding controller method
-// THIS SHOULD NEVER CHANGE (Not a good approach generally but for this project it's fine - kinda)
+// THIS SHOULD NEVER CHANGE (expect for getting the endpoint parameters)
 foreach ($routes as $route => $controllerAction) {
     // Extract the route and method from the string
     list($routeMethod, $routePath) = explode(' ', $route);
@@ -56,12 +78,22 @@ foreach ($routes as $route => $controllerAction) {
     // Convert the route string to a regular expression
     $routePattern = str_replace('/', '\/', $routePath);
 
-    // STUDENT DETAILS SEARCH FOR ENDPOINTS
-    // Adjust the regular expression to capture the student ID
+    // -------------------------------- Get Data from URL --------------------------------
+
+    // If the url has a parameter like /students/search/id/1 we need to extract the id
+    // We will use regular expressions to extract the id
+    // Example:
+
+    // Adjust the regular expression to capture the student ID - (Used for /students/search/id/{studentId})
     $routePattern = str_replace('{studentId}', '(\d+)', $routePattern);
 
-    // Adjust the regular expression to capture the student email
+    // Adjust the regular expression to capture the student email - (Used for /students/search/email/{studentEmail})
     $routePattern = str_replace('{studentEmail}', '([^/]+)', $routePattern);
+
+    // If any more parameters are needed, add them here
+    // ...
+
+    // --------------------------------------------------------------------------------------
 
     // See if the current request matches the route
     if ($requestMethod === $routeMethod && preg_match("#^$routePattern$#", $requestUrl, $matches)) {
