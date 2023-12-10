@@ -1,7 +1,7 @@
 <?php
 
-require_once 'repos/StudentDatabase.php';
-require_once 'repos/CourseDatabase.php';
+require_once 'db/StudentDatabase.php';
+require_once 'db/CourseDatabase.php';
 require_once 'models/Student.php';
 
 
@@ -17,7 +17,7 @@ class StudentController
     }
 
     // GET ALL STUDENTS (SELECT 1)
-    // GET - http://localhost/neolearn-backend/index.php/students
+    // GET - /neolearn-backend/index.php/students
     public function getAll()
     {
         // Try to get all the students from the database
@@ -49,7 +49,7 @@ class StudentController
     }
 
     // GET STUDENT BY ID (SELECT 2)
-    // GET - http://localhost/neolearn-backend/index.php/students/XXX
+    // GET - /neolearn-backend/index.php/students/XXX
     public function getById($id)
     {
         // We implemented the routing logic in the index.php file
@@ -83,7 +83,7 @@ class StudentController
     }
 
     // GET STUDENT BY EMAIL (SELECT 3)
-    // GET - http://localhost/neolearn-backend/index.php/students/search/email/XXX
+    // GET - /neolearn-backend/index.php/students/search/email/XXX
     public function getByEmail($email)
     {
         // We implemented the routing logic in the index.php file
@@ -120,7 +120,7 @@ class StudentController
     }
 
     // CREATE STUDENT (INSERT)
-    // POST - http://localhost/neolearn-backend/index.php/students
+    // POST - /neolearn-backend/index.php/students
     public function createStudent()
     {
         // Get the request body
@@ -203,7 +203,7 @@ class StudentController
     }
 
     // UPDATE STUDENT (UPDATE)
-    // PUT - http://localhost/neolearn-backend/index.php/students
+    // PUT - /neolearn-backend/index.php/students
     public function update()
     {
         // Get the request body
@@ -308,7 +308,7 @@ class StudentController
     }
 
     // DELETE STUDENT (DELETE)
-    // DELETE - http://localhost/neolearn-backend/index.php/students/delete/XXX
+    // DELETE - /neolearn-backend/index.php/students/delete/XXX
     public function delete($studentId)
     {
         // Check if the student exists
@@ -365,7 +365,7 @@ class StudentController
     }
 
     // GET ALL COURSES FOR STUDENT
-    // GET - http://localhost/neolearn-backend/index.php/students/search/XXX/courses
+    // GET - /neolearn-backend/index.php/students/search/XXX/courses
     public function getCourses($studentId)
     {
         // We implemented the routing logic in the index.php file
@@ -420,7 +420,7 @@ class StudentController
     }
 
     // ADD COURSE TO STUDENT
-    // POST - http://localhost/neolearn-backend/index.php/students/courses/add
+    // POST - /neolearn-backend/index.php/students/courses/add
     public function addCourseToStudent()
     {
         // Get the request body
@@ -510,4 +510,93 @@ class StudentController
         echo json_encode($message);
     }
 
+    // REMOVE COURSE FROM STUDENT
+    // DELETE - /neolearn-backend/index.php/students/courses/remove
+    public function removeCourseFromStudent() {
+        // Get the request body
+        $requestBody = file_get_contents('php://input');
+
+        // Make sure that the request body is not empty
+        if (empty($requestBody)) {
+            // If the request body is empty return an error message
+            header('Content-Type: application/json');
+            http_response_code(400);
+
+            $message = array(
+                'message' => 'Failed remove course from student',
+                'error' => 'Request body is empty'
+            );
+
+            // Return the error message as JSON
+            echo json_encode($message);
+
+            // Stop the execution of the script.
+            return null;
+        }
+
+        // Parse the request body as JSON
+        $jsonRequestBody = json_decode($requestBody);
+
+        // Get the student ID and course ID from the request body
+        $requestStudentId = $jsonRequestBody->studentId;
+        $requestCourseId = $jsonRequestBody->courseId;
+
+        // Check that the student and course exist
+        $existingStudent = $this->studentDatabase->getById($requestStudentId);
+        $existingCourse = $this->courseDatabase->getById($requestCourseId);
+
+        if ($existingStudent === null || $existingCourse === null) {
+            $studentFound = $existingStudent !== null;
+            $courseFound = $existingCourse !== null;
+
+            // If the student or course doesn't exist return an error message
+            header('Content-Type: application/json');
+            http_response_code(400);
+
+            $message = array(
+                'message' => 'Failed remove course from student',
+                'error' => 'Student or course not found',
+                'studentFound' => $studentFound,
+                'courseFound' => $courseFound
+            );
+
+            // Return the error message as JSON
+            echo json_encode($message);
+
+            // Stop the execution of the script.
+            return null;
+        }
+
+        // We will get to this point only if the student and course exist.
+        $removed = $this->studentDatabase->removeCourseFromStudent($requestStudentId, $requestCourseId);
+
+        // Check if the course was removed successfully
+        if ($removed === false) {
+            // If the course wasn't removed successfully return an error message
+            header('Content-Type: application/json');
+            http_response_code(500);
+
+            $message = array(
+                'message' => 'Failed remove course from student',
+                'error' => 'Course not removed'
+            );
+
+            // Return the error message as JSON
+            echo json_encode($message);
+
+            // Stop the execution of the script.
+            return null;
+        }
+
+        // If everything went well return a success message
+        header('Content-Type: application/json');
+        http_response_code(200);
+
+        $message = array(
+            'message' => 'Course removed successfully from user list'
+        );
+
+        // Return the success message as JSON
+        echo json_encode($message);
+    }
 }
