@@ -14,9 +14,6 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 // Connect to the database
 $conn = configDatabase();
 
-// Include the routes from RoutesConfig.php
-include 'config/RoutesConfig.php';
-
 $routes = [
     // -------------------------------- STUDENT ENDPOINTS --------------------------------
     // Get All Students
