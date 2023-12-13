@@ -3,8 +3,6 @@ require_once 'config/DatabaseConfig.php';
 require __DIR__. '/controllers/StudentController.php';
 require __DIR__. '/controllers/AuthenticationController.php';
 
-require_once 'config/RoutesConfig.php';
-
 /* This is the entry point of the application */
 
 // Parse request url and method
