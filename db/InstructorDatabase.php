@@ -9,47 +9,207 @@ class InstructorDatabase
         $this->dbConnection = $dbConnection;
     }
 
-    // The methods below have the same logic as the ones in the StudentDatabase
-    // The only difference is that we are using the Instructor model instead of the Student model
-    // So we will use the instructor table instead of the student table
-    // We will use this class on the controllers
-    // (See: StudentDatabase.php and StudentController.php)
-
     // GET (by id)
     public function getById($id)
     {
-        // TODO: Implement getById() method.
+        $sql = "SELECT * FROM instructor WHERE id = '$id'";
+
+        $result = mysqli_query($this->dbConnection, $sql);
+
+        // Check if the query failed
+        if (!$result) { return null; }
+
+        // If the query returned 0 rows return null (no user found)
+        if (mysqli_num_rows($result) === 0) { return null; }
+
+        $dbInstructor = mysqli_fetch_assoc($result);  // This will return an associative array
+
+        // Now we need to turn this array into a User object
+        // Get the values from the array
+        $dbInstructorId = $dbInstructor['id'];
+        $dbInstructorEmail = $dbInstructor['email'];
+        $dbInstructorPassword = $dbInstructor['password'];
+
+        // Create a new Instructor object and return it
+        $instructor = new Instructor($dbInstructorEmail, $dbInstructorPassword);
+        $instructor->setId($dbInstructorId);
+
+        return $instructor;
     }
 
     // GET (by email)
-    public function getByEmail($email)
-    {
-        // TODO: Implement getByEmail() method.
+    public function getByEmail($email) {
+        $query = "SELECT * FROM instructor WHERE email = '$email'";
+        $queryResult = mysqli_query($this->dbConnection, $query);
+
+        // if the query failed return null
+        if (!$queryResult) { return null; }
+
+        // if the query returned 0 rows return null
+        if (mysqli_num_rows($queryResult) === 0) { return null; }
+
+        $dbInstructor = mysqli_fetch_assoc($queryResult); // This will return an associative array
+
+        // Now we need to turn this array into a User object
+        // Get the values from the array
+        $dbInstructorId = $dbInstructor['id'];
+        $dbInstructorEmail = $dbInstructor['email'];
+        $dbInstructorPassword = $dbInstructor['password'];
+
+        // Create a new User object and return it
+        $instructor = new Instructor($dbInstructorEmail, $dbInstructorPassword);
+        $instructor->setId($dbInstructorId);
+
+        return $instructor;
     }
 
     // GET (all)
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        $sql = "SELECT * FROM instructor";
+        $result = mysqli_query($this->dbConnection, $sql);
+
+        // Check if the query failed
+        if (!$result) { return null; }
+
+        // Check if the query returned any rows if it does return an empty array
+        if (mysqli_num_rows($result) === 0) { return []; }
+
+        // We will get to this point only if the query returned rows
+
+        // Create an empty array
+        $instructors = [];
+
+        // db result is an array of arrays
+        $dbResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        // Loop through the db result array and turn each item into a User object
+        foreach ($dbResult as $dbInstructor) {
+            // Get the values from the array
+            $dbInstructorId = $dbInstructorId['id'];
+            $dbInstructorEmail = $dbInstructor['email'];
+            $dbInstructorPassword = $dbInstructor['password'];
+
+            // Create a new Instructor object and add it to the array
+            $instructor = new Instructor($dbInstructorEmail, $dbInstructorPassword);
+            $instructor->setId($dbInstructorId);
+
+            $instructors[] = $instructor; // This adds the instructors to the array
+        }
+
+        // Return the array
+        return $instructors;
     }
 
-    // INSERT
-    public function save(Instructor $instructor)
-    {
-        // TODO: Implement save() method.
+   // INSERT
+   public function save(Instructor $newInstructor) {
+    $email = $newInstructor->getEmail();
+    $password = $newInstructor->getPassword();
+
+    $query = "INSERT INTO instructor (email, password) VALUES ('$email', '$password')";
+
+    $queryResult = mysqli_query($this->dbConnection, $query);
+
+    if (!$queryResult) {
+        $sqlError = mysqli_error($this->dbConnection);
+        throw new Exception($sqlError);
+        return null;
     }
 
-    // UPDATE
-    public function update(Instructor $instructor)
-    {
-        // TODO: Implement update() method.
+    // We get to this point if the query managed to execute.
+    return $newStudent;
+}
+
+     // UPDATE
+     public function update(Instructor $updatedInstructor) {
+        // Get the values from the instructor object
+        $userId = $updatedInstructor->getId();
+        $email = $updatedInstructor->getEmail();
+        $password = $updatedInstructor->getPassword();
+
+        $query = "UPDATE instructor SET email = '$email', password = '$password' WHERE id = '$userId'";
+        $result = mysqli_query($this->dbConnection, $query);
+
+        // Check if the query failed
+        if (!$result) { return null; }
+
+        // We get to this point only if the query executed successfully.
+        return $updatedInstructor;
     }
 
     // DELETE
-    public function delete(Instructor $instructor)
-    {
-        // TODO: Implement delete() method.
+    public function delete($instructorIdToDelete) {
+        $query = "DELETE FROM instructor WHERE id = '$instructorIdToDelete'";
+
+        $result = mysqli_query($this->dbConnection, $query);
+
+        // Check if the query failed
+        if (!$result) { return false; }
+
+        // We get to this point only if the query executed successfully.
+        return true;
     }
 
-    // Add any other methods you need
+    //GET_COURSES
+    // GET ALL COURSES FOR STUDENT
+    public function getAllCoursesForInstructor($instructorId) {
+        // We will get to this point only if the instructor exists.
+        $query = "SELECT * FROM courses WHERE instructor_id = '$instructorId'";
+
+        $result = mysqli_query($this->dbConnection, $query);
+
+        // Check if the query failed
+        if (!$result) { return null; }
+
+        // Check if the query returned no rows if it does return an empty array
+        if (mysqli_num_rows($result) === 0) { return []; }
+
+        // We will get to this point only if the query returned rows
+
+        $courses = [];  // Create an empty array
+
+        // db result is an array of arrays
+        $dbResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        // Loop through the db result array and turn each item into a Course object
+        foreach ($dbResult as $dbCourse) {
+            // Get the values from the array
+            $dbCourseId = $dbCourse['course_id'];
+
+            // Create a new Course object and add it to the array
+            $course = new Course($dbCourseId);
+
+            $courses[] = $course; // This adds the course to the array
+        }
+
+        // Return the array
+        return $courses;
+    }
+
+     // ADD COURSE TO INSTRUCTOR
+    public function addCourseToStudent($instructorId, $courseId) {
+        // We will get to this point only if the instructor and course exist.
+        $query = "INSERT INTO courses (instructor_id) WHERE course_id='$courseId' VALUES ('$instructorId')";
+        $result = mysqli_query($this->dbConnection, $query);
+
+        // Check if the query failed
+        if (!$result) { return false; }
+
+        // We get to this point only if the query executed successfully.
+        return true;
+    }
+
+       // REMOVE COURSE FROM INSTRUCTOR
+    public function removeCourseFromInstructor($instructorId, $courseId) {
+        // We will get to this point only if the instructor and course exist.
+        $query = "DELETE FROM courses WHERE instructor_id = '$instructorId'";
+        $result = mysqli_query($this->dbConnection, $query);
+
+        // Check if the query failed
+        if (!$result) { return false; }
+
+        // We get to this point only if the query executed successfully.
+        return true;
+    }
+
 }

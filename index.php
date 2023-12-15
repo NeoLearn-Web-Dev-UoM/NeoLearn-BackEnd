@@ -3,8 +3,6 @@ require_once 'config/DatabaseConfig.php';
 require __DIR__. '/controllers/StudentController.php';
 require __DIR__. '/controllers/AuthenticationController.php';
 
-require_once 'config/RoutesConfig.php';
-
 /* This is the entry point of the application */
 
 // Parse request url and method
@@ -13,9 +11,6 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 // Connect to the database
 $conn = configDatabase();
-
-// Include the routes from RoutesConfig.php
-include 'config/RoutesConfig.php';
 
 $routes = [
     // -------------------------------- STUDENT ENDPOINTS --------------------------------
@@ -51,13 +46,35 @@ $routes = [
 
     // -------------------------------- INSTRUCTOR ENDPOINTS --------------------------------
 
-    // Here we will add the instructor endpoints
-    // The instructor endpoints will be similar to the student endpoints
-    // Based on what we need to do, we will add the corresponding endpoints
-    // We also need to add the corresponding controller class and methods
-    // Example:
-    // 'GET /neolearn-backend/index.php/instructors' => 'InstructorController@getAll',
+    // Get All Instructors
+    'GET /neolearn-backend/index.php/instructors' => 'InstructorController@getAll',
 
+    // Create a new instructors
+    'POST /neolearn-backend/index.php/instructors' => 'InstructorController@createInstructor',
+
+    // Get a instructors by id
+    'GET /neolearn-backend/index.php/instructors/search/id/{studentId}' => 'InstructorController@getById',
+
+    // Get a instructors by email
+    'GET /neolearn-backend/index.php/instructors/search/email/{studentEmail}' => 'InstructorController@getByEmail',
+
+    // Update a instructors
+    'PUT /neolearn-backend/index.php/instructors' => 'InstructorController@update',
+
+    // Delete a instructors
+    'DELETE /neolearn-backend/index.php/instructors/delete/{studentId}' => 'InstructorController@delete',
+
+    // Get a instructors's courses
+    'GET /neolearn-backend/index.php/instructors/search/{studentId}/courses' => 'InstructorController@getCourses',
+
+    // Add a course to a instructors
+    'PUT /neolearn-backend/index.php/instructors/courses/add' => 'InstructorController@addCourseToInstructor',
+
+    // Remove a course from a instructors
+    'PUT /neolearn-backend/index.php/instructors/courses/remove' => 'InstructorController@removeCourseFromInstructor',
+
+    // Authentication for instructors (login)
+    'POST /neolearn-backend/index.php/auth/instructor/login' => 'AuthenticationController@loginInstructor',
 
     // -------------------------------- COURSE ENDPOINTS ------------------------------------
 
