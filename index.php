@@ -54,16 +54,16 @@ $routes = [
     // Create a new instructor
     'POST /neolearn-backend/index.php/instructors' => 'InstructorController@createInstructor',
 
-    // Get a instructors by id
+    // Get an instructor by id
     'GET /neolearn-backend/index.php/instructors/search/id/{instructorId}' => 'InstructorController@getById',
 
-    // Get a instructors by email
+    // Get an instructor by email
     'GET /neolearn-backend/index.php/instructors/search/email/{instructorEmail}' => 'InstructorController@getByEmail',
 
-    // Update a instructor
+    // Update an instructor
     'PUT /neolearn-backend/index.php/instructors' => 'InstructorController@update',
 
-    // Delete a instructors
+    // Delete an instructor
     'DELETE /neolearn-backend/index.php/instructors/delete/{instructorId}' => 'InstructorController@delete',
 
     // Authentication for instructors (login)
