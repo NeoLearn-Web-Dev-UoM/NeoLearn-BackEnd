@@ -12,11 +12,8 @@ $requestUrl = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $endpointMatched = false;
 
-// Connect to the database
-$conn = \config\DatabaseConfig::configDatabase();
-
-// Use the routes from the RoutesConfig class
-$routes = \config\RoutesConfig::getApiRoutes();
+$conn = \config\DatabaseConfig::configDatabase();   // Connect to the database
+$routes = \config\RoutesConfig::getApiRoutes();     // Get all the routes
 
 // Match the route and call the corresponding controller method
 foreach ($routes as $route => $controllerAction) {
@@ -73,10 +70,6 @@ if (!$endpointMatched) {
     // If no route is matched, display an error
     header("HTTP/1.1 404 Not Found");
     header('Content-Type: application/json');
-
-    // Get the request method and url
-    $requestMethod = $_SERVER['REQUEST_METHOD'];
-    $requestUrl = $_SERVER['REQUEST_URI'];
 
     // Create an error message
     $errorMsg = array();
