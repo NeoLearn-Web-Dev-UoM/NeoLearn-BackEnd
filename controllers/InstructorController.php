@@ -16,15 +16,15 @@ class InstructorController
     // GET - /instructors/
     public function getAll()
     {
-        // Try to get all the students from the database
         try {
+            // Try to get all the instructors from the database
             $instructors = $this->instructorDatabase->getAll();
 
             // If everything went well return the students as JSON
             header('Content-Type: application/json');
             http_response_code(200);
 
-            echo json_encode($students);
+            echo json_encode($instructors);
 
         } catch (Exception $e) {
             // If something went wrong return an error message
