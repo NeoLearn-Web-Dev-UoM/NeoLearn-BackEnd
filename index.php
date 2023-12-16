@@ -113,8 +113,6 @@ foreach ($routes as $route => $controllerAction) {
 
     // See if the current request matches the route
     if ($requestMethod === $routeMethod && preg_match("#^$routePattern$#", $requestUrl, $matches)) {
-        // Set the endpoint matched flag to true (Used for error handling)
-        $endpointMarched = true;
 
         // Extract the controller and action names
         list($controller, $action) = explode('@', $controllerAction);
@@ -127,6 +125,9 @@ foreach ($routes as $route => $controllerAction) {
 
         // Call the action method and pass any URL parameters to it
         call_user_func_array([$controllerInstance, $action], $matches);
+
+        // Set the endpoint matched flag to true (Used for error handling)
+        $endpointMatched = true;
         break;
     }
 }
