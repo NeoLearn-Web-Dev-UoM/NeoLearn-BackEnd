@@ -66,19 +66,18 @@ class InstructorDatabase
     // GET (all)
     public function getAll()
     {
+        // Create an empty array
+        $instructors = [];
+
         $sql = "SELECT * FROM instructor";
         $result = mysqli_query($this->dbConnection, $sql);
 
-        // Check if the query failed
-        if (!$result) { return null; }
+        if (!$result) { return null; }  // Check if the query failed
 
         // Check if the query returned any rows if it does return an empty array
-        if (mysqli_num_rows($result) === 0) { return []; }
+        if (mysqli_num_rows($result) === 0) { return $instructors; }
 
         // We will get to this point only if the query returned rows
-
-        // Create an empty array
-        $instructors = [];
 
         // db result is an array of arrays
         $dbResult = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -86,7 +85,7 @@ class InstructorDatabase
         // Loop through the db result array and turn each item into a User object
         foreach ($dbResult as $dbInstructor) {
             // Get the values from the array
-            $dbInstructorId = $dbInstructorId['id'];
+            $dbInstructorId = $dbInstructor['id'];
             $dbInstructorEmail = $dbInstructor['email'];
             $dbInstructorPassword = $dbInstructor['password'];
 
@@ -116,8 +115,12 @@ class InstructorDatabase
         return null;
     }
 
+    // Get the id of the new instructor (this gets the last inserted id from the dbConnection)
+    $newInstructorId = mysqli_insert_id($this->dbConnection);
+    $newInstructor->setId($newInstructorId);
+
     // We get to this point if the query managed to execute.
-    return $newStudent;
+    return $newInstructor;
 }
 
      // UPDATE
@@ -151,7 +154,7 @@ class InstructorDatabase
     }
 
     //GET_COURSES
-    // GET ALL COURSES FOR STUDENT
+    // GET ALL COURSES FOR INSTRUCTOR
     public function getAllCoursesForInstructor($instructorId) {
         // We will get to this point only if the instructor exists.
         $query = "SELECT * FROM courses WHERE instructor_id = '$instructorId'";
@@ -187,7 +190,7 @@ class InstructorDatabase
     }
 
      // ADD COURSE TO INSTRUCTOR
-    public function addCourseToStudent($instructorId, $courseId) {
+    public function addCourseToInstructor($instructorId, $courseId) {
         // We will get to this point only if the instructor and course exist.
         $query = "INSERT INTO courses (instructor_id) WHERE course_id='$courseId' VALUES ('$instructorId')";
         $result = mysqli_query($this->dbConnection, $query);
