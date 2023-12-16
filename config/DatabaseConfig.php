@@ -1,18 +1,29 @@
 <?php
-// DB Credentials
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "neolearn";
+namespace config;
 
-function configDatabase() {
-    global $db_host, $db_user, $db_pass, $db_name;
-    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+// This class is used to configure the database connection
+// It holds the database credentials and a method to connect to the database
+// We will use this class on index.php to connect to the database
 
-    if ($conn->connect_error) {
-        $message = array("message" => "Database Connection failed");
-        die(json_encode($message));
+use mysqli;
+
+class DatabaseConfig
+{
+    public static $db_host = "localhost";
+    public static $db_user = "root";
+    public static $db_pass = "";
+    public static $db_name = "neolearn";
+
+    // Combine all the routes into one array
+    // We will use this on index.php to get all the routes
+    public static function configDatabase() {
+        $conn = new mysqli(self::$db_host, self::$db_user, self::$db_pass, self::$db_name);
+
+        if ($conn->connect_error) {
+            $message = array("message" => "Database Connection failed");
+            die(json_encode($message));
+        }
+
+        return $conn;
     }
-
-    return $conn;
 }
