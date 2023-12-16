@@ -2,6 +2,7 @@
 require_once 'config/DatabaseConfig.php';
 require __DIR__. '/controllers/StudentController.php';
 require __DIR__. '/controllers/AuthenticationController.php';
+require __DIR__. '/controllers/InstructorController.php';
 
 /* This is the entry point of the application */
 
@@ -53,25 +54,19 @@ $routes = [
     'POST /neolearn-backend/index.php/instructors' => 'InstructorController@createInstructor',
 
     // Get a instructors by id
-    'GET /neolearn-backend/index.php/instructors/search/id/{studentId}' => 'InstructorController@getById',
+    'GET /neolearn-backend/index.php/instructors/search/id/{instructorId}' => 'InstructorController@getById',
 
     // Get a instructors by email
-    'GET /neolearn-backend/index.php/instructors/search/email/{studentEmail}' => 'InstructorController@getByEmail',
+    'GET /neolearn-backend/index.php/instructors/search/email/{instructorEmail}' => 'InstructorController@getByEmail',
 
-    // Update a instructors
+    // Update a instructor
     'PUT /neolearn-backend/index.php/instructors' => 'InstructorController@update',
 
     // Delete a instructors
-    'DELETE /neolearn-backend/index.php/instructors/delete/{studentId}' => 'InstructorController@delete',
+    'DELETE /neolearn-backend/index.php/instructors/delete/{instructorId}' => 'InstructorController@delete',
 
     // Get a instructors's courses
-    'GET /neolearn-backend/index.php/instructors/search/{studentId}/courses' => 'InstructorController@getCourses',
-
-    // Add a course to a instructors
-    'PUT /neolearn-backend/index.php/instructors/courses/add' => 'InstructorController@addCourseToInstructor',
-
-    // Remove a course from a instructors
-    'PUT /neolearn-backend/index.php/instructors/courses/remove' => 'InstructorController@removeCourseFromInstructor',
+    'GET /neolearn-backend/index.php/instructors/search/{instructorId}/courses' => 'InstructorController@getCourses',
 
     // Authentication for instructors (login)
     'POST /neolearn-backend/index.php/auth/instructor/login' => 'AuthenticationController@loginInstructor',
@@ -106,6 +101,14 @@ foreach ($routes as $route => $controllerAction) {
 
     // Adjust the regular expression to capture the student email - (Used for /students/search/email/{studentEmail})
     $routePattern = str_replace('{studentEmail}', '([^/]+)', $routePattern);
+
+    // Adjust the regular expression to capture the instructor ID - (Used for /instructors/search/id/{instructorId})
+    $routePattern = str_replace('{instructorId}', '(\d+)', $routePattern);
+
+    // Adjust the regular expression to capture the instructor email - (Used for /instructors/search/email/{instructorEmail})
+    $routePattern = str_replace('{instructorEmail}', '([^/]+)', $routePattern);
+
+
 
     // If any more parameters are needed, add them here
     // ...
