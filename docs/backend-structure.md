@@ -8,11 +8,13 @@ The backend is responsible for the following tasks:
 - Create, delete and update admins
 - Login users
 
+The api documentation can be found [here](https://documenter.getpostman.com/view/23775608/2s9Ykn8gvq).
+
 ## Structure
 The backend is divided into different folders, each folder has a specific task.
 
 ### `config` folder
-This folder contains the configuration files for the backend such as the database connection configuration.
+This folder contains the configuration classes for the backend such as the database connection configuration.
 
 ### `controllers` folder
 This folder contains the controllers for the backend. 
