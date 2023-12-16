@@ -67,16 +67,7 @@ foreach ($routes as $route => $controllerAction) {
 }
 
 if (!$endpointMatched) {
-    // If no route is matched, display an error
-    header("HTTP/1.1 404 Not Found");
-    header('Content-Type: application/json');
-
-    // Create an error message
-    $errorMsg = array();
-    $errorMsg['error'] = "Endpoint not found";
-    $errorMsg['message'] = "No endpoint found for the request method and url. Please check the documentation for the correct endpoints.";
-    $errorMsg['method'] = $requestMethod;
-    $errorMsg['url'] = $requestUrl;
-
-    echo json_encode($errorMsg, JSON_PRETTY_PRINT);
+    // If no route is matched, call the handleUnmatchedRoute method
+    $result = \config\RoutesConfig::handleUnmatchedRoute($requestMethod, $requestUrl);
+    echo json_encode($result);
 }

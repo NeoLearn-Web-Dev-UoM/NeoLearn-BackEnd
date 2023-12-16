@@ -78,4 +78,19 @@ class RoutesConfig
     public static function getApiRoutes() {
         return array_merge(self::$studentRoutes, self::$instructorRoutes, self::$adminRoutes, self::$courseRoutes);
     }
+
+    // This method will be used if no route is matched
+    public static function handleUnmatchedRoute($requestMethod, $requestUrl) {
+        header("HTTP/1.1 404 Not Found");
+        header('Content-Type: application/json');
+
+        // Create an error message
+        $errorMsg = array();
+        $errorMsg['error'] = "Endpoint not found";
+        $errorMsg['message'] = "No endpoint found for the request method and url. Please check the documentation for the correct endpoints.";
+        $errorMsg['method'] = $requestMethod;
+        $errorMsg['url'] = $requestUrl;
+
+        return $errorMsg;
+    }
 }
