@@ -41,7 +41,6 @@ foreach ($routes as $route => $controllerAction) {
     $routePattern = str_replace('{instructorEmail}', '([^/]+)', $routePattern);
 
     // If any more parameters are needed, add them here
-    // ...
 
     // --------------------------------------------------------------------------------------
 
