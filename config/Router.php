@@ -1,15 +1,23 @@
 <?php
-
 namespace config;
+
+require 'controllers/StudentController.php';
+require 'controllers/InstructorController.php';
+require 'controllers/CourseController.php';
+require 'controllers/AuthenticationController.php';
+
+require 'config/RoutesConfig.php';
+require_once 'config/DatabaseConfig.php';
+
 
 class Router
 {
     private $conn;
     private $routes;
 
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->conn = $conn;
+        $this->conn = DatabaseConfig::configDatabase();
         $this->routes = RoutesConfig::getApiRoutes();
     }
 
