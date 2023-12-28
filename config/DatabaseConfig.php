@@ -14,8 +14,6 @@ class DatabaseConfig
     public static $db_pass = "";
     public static $db_name = "neolearn";
 
-    // Combine all the routes into one array
-    // We will use this on index.php to get all the routes
     public static function configDatabase() {
         $conn = new mysqli(self::$db_host, self::$db_user, self::$db_pass, self::$db_name);
 
