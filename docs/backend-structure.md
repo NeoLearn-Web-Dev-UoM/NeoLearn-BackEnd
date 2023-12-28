@@ -10,6 +10,11 @@ The backend is responsible for the following tasks:
 
 The api documentation can be found [here](https://documenter.getpostman.com/view/23775608/2s9Ykn8gvq).
 
+## Architecture
+![image](https://github.com/NeoLearn-Web-Dev-UoM/NeoLearn-BackEnd/assets/77233507/068e255b-bee6-4536-929d-bb80b65bd484)
+![image](https://github.com/NeoLearn-Web-Dev-UoM/NeoLearn-BackEnd/assets/77233507/3bc78d23-ed8c-4c10-b0a6-d2f1c82489ad)
+
+
 ## Structure
 The backend is divided into different folders, each folder has a specific task.
 
