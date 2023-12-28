@@ -8,7 +8,7 @@ namespace config;
 // We also need to add the corresponding controller class and methods
 // Example:
 // 'GET /neolearn-backend/index.php/courses' => 'CourseController@getAll',
-class RoutesConfig
+class EndpointsConfig
 {
     public static $studentRoutes = [
         // Get all students

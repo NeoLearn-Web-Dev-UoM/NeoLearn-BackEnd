@@ -6,11 +6,11 @@ require 'controllers/InstructorController.php';
 require 'controllers/CourseController.php';
 require 'controllers/AuthenticationController.php';
 
-require 'config/RoutesConfig.php';
+require 'config/EndpointsConfig.php';
 require_once 'config/DatabaseConfig.php';
 
 
-class Router
+class RouterConfig
 {
     private $conn;
     private $routes;
@@ -18,7 +18,7 @@ class Router
     public function __construct()
     {
         $this->conn = DatabaseConfig::configDatabase();
-        $this->routes = RoutesConfig::getApiRoutes();
+        $this->routes = EndpointsConfig::getApiRoutes();
     }
 
     // This method will be used to handle the request
