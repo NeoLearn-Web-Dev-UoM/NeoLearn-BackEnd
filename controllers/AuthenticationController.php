@@ -93,4 +93,12 @@ class AuthenticationController
 
         $this->loginUser($givenEmail, $givenPassword, AuthenticationController::$INSTRUCTOR);
     }
+
+    // LOGIN FOR ADMIN
+    public function loginAdmin() {
+        // Get the Login details from the request body
+        list($givenEmail, $givenPassword) = $this->extractLoginDetails();
+
+        $this->loginUser($givenEmail, $givenPassword, AuthenticationController::$ADMIN);
+    }
 }
