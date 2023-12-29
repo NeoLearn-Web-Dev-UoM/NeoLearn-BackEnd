@@ -2,11 +2,19 @@
 
 require_once 'db/StudentDatabase.php';
 require_once 'db/InstructorDatabase.php';
+require_once 'controllers/ControllerUtils.php';
+
+use controllers\ControllerUtils;
 
 class AuthenticationController
 {
     private $studentDatabase;
     private $instructorDatabase;
+
+    public static $STUDENT = 'student';
+    public static $INSTRUCTOR = 'instructor';
+
+    public static $ADMIN = 'admin';
 
     public function __construct($conn)
     {
@@ -14,123 +22,75 @@ class AuthenticationController
         $this->instructorDatabase = new InstructorDatabase($conn);
     }
 
+    /**
+     * This method is used to select the correct database based on the user type
+     * To prevent errors related to typos we will always use the constants defined in this class [$STUDENT, $INSTRUCTOR etc]
+     */
+    private function selectDatabase($userType) {
+        if ($userType === AuthenticationController::$STUDENT) return $this->studentDatabase;
+
+        else if ($userType === AuthenticationController::$INSTRUCTOR) return $this->instructorDatabase;
+
+        // TODO: Add the admin database here
+        else if ($userType === AuthenticationController::$ADMIN) return null;
+
+        // We will get here if the user type is not valid. throw an exception
+        throw new Exception('Invalid user type');
+    }
+
+    /**
+     * This method is a generic login method that can be used for both students and instructors
+     * We provide the user type as a parameter to select the correct database
+     * To prevent errors related to typos we will always use the constants defined in this class [$STUDENT, $INSTRUCTOR etc]
+     */
+    public function loginUser($email, $pass, $userType) {
+        $dbToUse = $this->selectDatabase($userType);
+        $user = $dbToUse->getByEmail($email);
+
+        $userNotFound = $user === null;
+        if ($userNotFound) ControllerUtils::sendErrorResponse(401, 'User with email ' . $email . ' not found');
+
+        $storedPassword = $user->getPassword();
+        $passwordsMatch = password_verify($pass, $storedPassword);
+
+        $passwordIsIncorrect = !$passwordsMatch;
+        if ($passwordIsIncorrect) ControllerUtils::sendErrorResponse(401, 'Incorrect password');
+
+        // If we get to this point the user exists and the password is correct
+        ControllerUtils::sendSuccessResponse(200, $user);
+    }
+
+    /**
+     * This method is used to extract the login details from the request body
+     * We will use this method in both loginStudent() and loginInstructor()
+     */
+    public function extractLoginDetails() {
+        // Get the Login details from the request body
+        $requestBody = file_get_contents('php://input');
+
+        // Decode the JSON object
+        $loginDetails = json_decode($requestBody);
+
+        // Get the email and password from the decoded object
+        $givenEmail = $loginDetails->email;
+        $givenPassword = $loginDetails->password;
+
+        return [$givenEmail, $givenPassword];
+    }
+
     // LOGIN FOR STUDENT
     public function loginStudent() {
         // Get the Login details from the request body
-        $requestBody = file_get_contents('php://input');
+        list($givenEmail, $givenPassword) = $this->extractLoginDetails();
 
-        // Decode the JSON object
-        $loginDetails = json_decode($requestBody);
-
-        // Get the email and password from the decoded object
-        $givenEmail = $loginDetails->email;
-        $givenPassword = $loginDetails->password;
-
-        // Get the student from the database
-        $student = $this->studentDatabase->getByEmail($givenEmail);
-
-        // Check if the student exists
-        if ($student === null) {
-            header('Content-Type: application/json');
-            http_response_code(404);
-
-            $response = [
-                'message' => 'Student with email ' . $givenEmail . ' not found'
-            ];
-
-            echo json_encode($response);
-
-            // Stop the execution of the script
-            return;
-        }
-
-        // Check if the password is correct
-        // we used password_hash() to hash the password when we created the user
-        // we will use password_verify() to compare the given password with the hashed password
-
-        // Get the hashed password we have stored in the database
-        $storedPassword = $student->getPassword();
-
-        if (!password_verify($givenPassword, $storedPassword)) {
-            header('Content-Type: application/json');
-            http_response_code(401);
-
-            $response = [
-                'message' => 'Incorrect password'
-            ];
-
-            echo json_encode($response);
-
-            // Stop the execution of the script
-            return;
-        }
-
-        // If we get to this point the user exists and the password is correct
-
-        // We will return the user so the front-end can use the user's details
-        header('Content-Type: application/json');
-        http_response_code(200);
-
-        echo json_encode($student);
+        $this->loginUser($givenEmail, $givenPassword, AuthenticationController::$STUDENT);
     }
 
-    //LOGIN FOR INSTRUCTOR
+    // LOGIN FOR INSTRUCTOR
     public function loginInstructor() {
         // Get the Login details from the request body
-        $requestBody = file_get_contents('php://input');
+        list($givenEmail, $givenPassword) = $this->extractLoginDetails();
 
-        // Decode the JSON object
-        $loginDetails = json_decode($requestBody);
-
-        // Get the email and password from the decoded object
-        $givenEmail = $loginDetails->email;
-        $givenPassword = $loginDetails->password;
-
-        // Get the instructor from the database
-        $instructor = $this->instructorDatabase->getByEmail($givenEmail);
-
-        // Check if the instructor exists
-        if ($instructor === null) {
-            header('Content-Type: application/json');
-            http_response_code(404);
-
-            $response = [
-                'message' => 'Instructor with email ' . $givenEmail . ' not found'
-            ];
-
-            echo json_encode($response);
-
-            // Stop the execution of the script
-            return;
-        }
-
-        // Check if the password is correct
-        // we used password_hash() to hash the password when we created the user
-        // we will use password_verify() to compare the given password with the hashed password
-
-        // Get the hashed password we have stored in the database
-        $storedPassword = $instructor->getPassword();
-
-        if (!password_verify($givenPassword, $storedPassword)) {
-            header('Content-Type: application/json');
-            http_response_code(401);
-
-            $response = [
-                'message' => 'Incorrect password'
-            ];
-
-            echo json_encode($response);
-
-            // Stop the execution of the script
-            return;
-        }
-
-        // If we get to this point the user exists and the password is correct
-
-        // We will return the user so the front-end can use the user's details
-        header('Content-Type: application/json');
-        http_response_code(200);
-
-        echo json_encode($instructor);
+        $this->loginUser($givenEmail, $givenPassword, AuthenticationController::$INSTRUCTOR);
     }
 }
