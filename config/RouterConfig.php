@@ -34,13 +34,15 @@ class RouterConfig
             // Convert the route string to a regular expression
             $routePattern = str_replace('/', '\/', $routePath);
 
-            $routePattern = $this->extractParameters($routePattern);
+            // Extract any parameters from the URL
+            $routePattern = $this->extractUrlParameters($routePattern);
 
             // See if the current request matches the route
             $requestMethodMatches = $requestMethod === $routeMethod;
             $patternMatches = preg_match("#^$routePattern$#", $requestUrl, $matches);
 
-            if ($requestMethodMatches && $patternMatches) {
+            $match = $requestMethodMatches && $patternMatches;
+            if ($match) {
                 $this->handleMatchedRoute($controllerAction, $matches);
 
                 $endpointMatched = true;
@@ -83,7 +85,7 @@ class RouterConfig
     }
 
     // This method extracts possible parameters from the URL
-    public function extractParameters($routePattern) {
+    public function extractUrlParameters($routePattern) {
         // Adjust the regular expression to capture the student ID - (Used for /students/search/id/{studentId})
         $routePattern = str_replace('{studentId}', '(\d+)', $routePattern);
 
