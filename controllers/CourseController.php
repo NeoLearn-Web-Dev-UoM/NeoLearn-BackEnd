@@ -203,7 +203,7 @@ class CourseController
         // Check that the name exists
         $existingCourse = $this->courseDatabase->getByName($requestName);
 
-        if ($existingStudent === null) {
+        if ($existingCourse === null) {
             // If the course doesn't exist return an error message
             header('Content-Type: application/json');
             http_response_code(400);
@@ -246,7 +246,7 @@ class CourseController
         $updated = $this->courseDatabase->update($updatedCourse);
 
         // Check if the course was updated successfully
-        if ($course === null) {
+        if ($updated === null) {
             // If the course wasn't updated successfully return an error message
             header('Content-Type: application/json');
             http_response_code(500);
