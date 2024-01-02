@@ -28,10 +28,11 @@ class InstructorDatabase
         // Get the values from the array
         $dbInstructorId = $dbInstructor['id'];
         $dbInstructorEmail = $dbInstructor['email'];
+        $dbInstructorName = $dbInstructor['name'];
         $dbInstructorPassword = $dbInstructor['password'];
 
         // Create a new Instructor object and return it
-        $instructor = new Instructor($dbInstructorEmail, $dbInstructorPassword);
+        $instructor = new Instructor($dbInstructorEmail, $dbInstructorName, $dbInstructorPassword);
         $instructor->setId($dbInstructorId);
 
         return $instructor;
@@ -54,10 +55,11 @@ class InstructorDatabase
         // Get the values from the array
         $dbInstructorId = $dbInstructor['id'];
         $dbInstructorEmail = $dbInstructor['email'];
+        $dbInstructorName = $dbInstructor['name'];
         $dbInstructorPassword = $dbInstructor['password'];
 
         // Create a new User object and return it
-        $instructor = new Instructor($dbInstructorEmail, $dbInstructorPassword);
+        $instructor = new Instructor($dbInstructorEmail, $dbInstructorName, $dbInstructorPassword);
         $instructor->setId($dbInstructorId);
 
         return $instructor;
@@ -87,10 +89,11 @@ class InstructorDatabase
             // Get the values from the array
             $dbInstructorId = $dbInstructor['id'];
             $dbInstructorEmail = $dbInstructor['email'];
+            $dbInstructorName = $dbInstructor['name'];
             $dbInstructorPassword = $dbInstructor['password'];
 
             // Create a new Instructor object and add it to the array
-            $instructor = new Instructor($dbInstructorEmail, $dbInstructorPassword);
+            $instructor = new Instructor($dbInstructorEmail, $dbInstructorName, $dbInstructorPassword);
             $instructor->setId($dbInstructorId);
 
             $instructors[] = $instructor; // This adds the instructors to the array
@@ -102,35 +105,36 @@ class InstructorDatabase
 
    // INSERT
    public function save(Instructor $newInstructor) {
-    $email = $newInstructor->getEmail();
-    $password = $newInstructor->getPassword();
+        $email = $newInstructor->getEmail();
+        $password = $newInstructor->getPassword();
+        $name = $newInstructor->getName();
 
-    $query = "INSERT INTO instructor (email, password) VALUES ('$email', '$password')";
+        $query = "INSERT INTO instructor (email, password, name) VALUES ('$email', '$password', '$name')";
 
-    $queryResult = mysqli_query($this->dbConnection, $query);
+        $queryResult = mysqli_query($this->dbConnection, $query);
 
-    if (!$queryResult) {
-        $sqlError = mysqli_error($this->dbConnection);
-        throw new Exception($sqlError);
-        return null;
+        if (!$queryResult) {
+            $sqlError = mysqli_error($this->dbConnection);
+            throw new Exception($sqlError);
+        }
+
+        // Get the id of the new instructor (this gets the last inserted id from the dbConnection)
+        $newInstructorId = mysqli_insert_id($this->dbConnection);
+        $newInstructor->setId($newInstructorId);
+
+        // We get to this point if the query managed to execute.
+        return $newInstructor;
     }
 
-    // Get the id of the new instructor (this gets the last inserted id from the dbConnection)
-    $newInstructorId = mysqli_insert_id($this->dbConnection);
-    $newInstructor->setId($newInstructorId);
-
-    // We get to this point if the query managed to execute.
-    return $newInstructor;
-}
-
-     // UPDATE
-     public function update(Instructor $updatedInstructor) {
+    // UPDATE
+    public function update(Instructor $updatedInstructor) {
         // Get the values from the instructor object
         $userId = $updatedInstructor->getId();
         $email = $updatedInstructor->getEmail();
+        $name = $updatedInstructor->getName();
         $password = $updatedInstructor->getPassword();
 
-        $query = "UPDATE instructor SET email = '$email', password = '$password' WHERE id = '$userId'";
+        $query = "UPDATE instructor SET email = '$email', password = '$password', name = '$name' WHERE id = '$userId'";
         $result = mysqli_query($this->dbConnection, $query);
 
         // Check if the query failed
