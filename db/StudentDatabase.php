@@ -34,10 +34,11 @@ class StudentDatabase
             // Get the values from the array
             $dbUserId = $dbUser['id'];
             $dbUserEmail = $dbUser['email'];
+            $dbUserName = $dbUser['name'];
             $dbUserPassword = $dbUser['password'];
 
             // Create a new User object and add it to the array
-            $user = new User($dbUserEmail, $dbUserPassword);
+            $user = new Student($dbUserEmail, $dbUserName, $dbUserPassword);
             $user->setId($dbUserId);
 
             $users[] = $user; // This adds the user to the array
@@ -66,10 +67,11 @@ class StudentDatabase
         // Get the values from the array
         $dbUserId = $dbUser['id'];
         $dbUserEmail = $dbUser['email'];
+        $dbUserName = $dbUser['name'];
         $dbUserPassword = $dbUser['password'];
 
         // Create a new User object and return it
-        $user = new User($dbUserEmail, $dbUserPassword);
+        $user = new User($dbUserEmail, $dbUserName, $dbUserPassword);
         $user->setId($dbUserId);
 
         return $user;
@@ -92,10 +94,11 @@ class StudentDatabase
         // Get the values from the array
         $dbUserId = $dbUser['id'];
         $dbUserEmail = $dbUser['email'];
+        $dbUserName = $dbUser['name'];
         $dbUserPassword = $dbUser['password'];
 
         // Create a new User object and return it
-        $user = new User($dbUserEmail, $dbUserPassword);
+        $user = new User($dbUserEmail, $dbUserName, $dbUserPassword);
         $user->setId($dbUserId);
 
         return $user;
@@ -104,9 +107,10 @@ class StudentDatabase
     // INSERT
     public function save(Student $newStudent) {
         $email = $newStudent->getEmail();
+        $name = $newStudent->getName();
         $password = $newStudent->getPassword();
 
-        $query = "INSERT INTO student (email, password) VALUES ('$email', '$password')";
+        $query = "INSERT INTO student (email, password, name) VALUES ('$email', '$password', '$name')";
 
         $queryResult = mysqli_query($this->dbConnection, $query);
 
@@ -125,9 +129,10 @@ class StudentDatabase
         // Get the values from the user object
         $userId = $updatedStudent->getId();
         $email = $updatedStudent->getEmail();
+        $name = $updatedStudent->getName();
         $password = $updatedStudent->getPassword();
 
-        $query = "UPDATE student SET email = '$email', password = '$password' WHERE id = '$userId'";
+        $query = "UPDATE student SET email = '$email', password = '$password', name = '$name' WHERE id = '$userId'";
         $result = mysqli_query($this->dbConnection, $query);
 
         // Check if the query failed
@@ -179,6 +184,7 @@ class StudentDatabase
     }
 
     // GET ALL COURSES FOR STUDENT
+    // TODO: Fix the Course constructor
     public function getAllCoursesForStudent($studentId) {
         // We will get to this point only if the student exists.
         $query = "SELECT * FROM student_has_courses WHERE student_id = '$studentId'";
@@ -203,6 +209,7 @@ class StudentDatabase
             // Get the values from the array
             $dbCourseId = $dbCourse['course_id'];
 
+            $videoURL = null;
             // Create a new Course object and add it to the array
             $course = new Course($dbCourseId);
 
