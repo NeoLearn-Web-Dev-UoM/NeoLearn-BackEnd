@@ -71,6 +71,24 @@ class RoutesConfig
 
     public static $courseRoutes = [
 
+        // Get all courses
+        'GET /neolearn-backend/index.php/courses' => 'CourseController@getAll',
+
+        // Create a new course
+        'POST /neolearn-backend/index.php/courses' => 'CourseController@createCourse',
+
+        // Get a course by id
+        'GET /neolearn-backend/index.php/courses/search/id/{courseId}' => 'CourseController@getById',
+
+        // Get a course by name
+        'GET /neolearn-backend/index.php/courses/search/name/{courseName}' => 'CourseController@getByName',
+
+        // Update a course
+        'PUT /neolearn-backend/index.php/courses' => 'CourseController@update',
+
+        // Delete a course
+        'DELETE /neolearn-backend/index.php/courses/delete/{courseId}' => 'CourseController@delete',
+
     ];
 
     // Combine all the routes into one array
