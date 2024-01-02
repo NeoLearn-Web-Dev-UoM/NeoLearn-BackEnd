@@ -65,10 +65,6 @@ class EndpointsConfig
         'POST /neolearn-backend/index.php/auth/instructor/login' => 'AuthenticationController@loginInstructor'
     ];
 
-    public static $adminRoutes = [
-
-    ];
-
     public static $courseRoutes = [
 
         // Get all courses
@@ -88,6 +84,11 @@ class EndpointsConfig
 
         // Delete a course
         'DELETE /neolearn-backend/index.php/courses/delete/{courseId}' => 'CourseController@delete',
+
+    ];
+
+    // Not implemented yet
+    public static $adminRoutes = [
 
     ];
 
