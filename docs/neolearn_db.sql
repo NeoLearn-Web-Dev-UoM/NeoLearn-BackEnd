@@ -46,6 +46,7 @@ CREATE TABLE `admin` (
 CREATE TABLE `course` (
   `id` int(11) NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci,
   `instructor_id` int(11) DEFAULT NULL,
   `video_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
