@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Βάση δεδομένων: `neolearn`
 --
 
+-- Create database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS neolearn;
+
 -- --------------------------------------------------------
 
 --

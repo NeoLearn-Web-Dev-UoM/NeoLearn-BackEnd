@@ -8,7 +8,7 @@ namespace config;
 // We also need to add the corresponding controller class and methods
 // Example:
 // 'GET /neolearn-backend/index.php/courses' => 'CourseController@getAll',
-class RoutesConfig
+class EndpointsConfig
 {
     public static $studentRoutes = [
         // Get all students
@@ -95,20 +95,5 @@ class RoutesConfig
     // We will use this on index.php to get all the routes
     public static function getApiRoutes() {
         return array_merge(self::$studentRoutes, self::$instructorRoutes, self::$adminRoutes, self::$courseRoutes);
-    }
-
-    // This method will be used if no route is matched
-    public static function handleUnmatchedRoute($requestMethod, $requestUrl) {
-        header("HTTP/1.1 404 Not Found");
-        header('Content-Type: application/json');
-
-        // Create an error message
-        $errorMsg = array();
-        $errorMsg['error'] = "Endpoint not found";
-        $errorMsg['message'] = "No endpoint found for the request method and url. Please check the documentation for the correct endpoints.";
-        $errorMsg['method'] = $requestMethod;
-        $errorMsg['url'] = $requestUrl;
-
-        return $errorMsg;
     }
 }

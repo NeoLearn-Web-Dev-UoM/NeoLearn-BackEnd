@@ -1,10 +1,19 @@
 # This file will be used by the web server to redirect all requests to the index.php file
 # This will let us use the backend like a REST API and call specific endpoints
 
+# Enable the Apache RewriteEngine
 RewriteEngine On
+
+# Set the base path for rewriting, specifying the base directory for the application
 RewriteBase /neolearn-backend/
 
 # Route all requests to index.php except existing files or directories
+# Check if the requested file does not exist
 RewriteCond %{REQUEST_FILENAME} !-f
+
+# Check if the requested directory does not exist
 RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite the URL to point to index.php and pass the query string (QSA) as well
 RewriteRule ^ index.php [QSA,L]
+
