@@ -48,7 +48,8 @@ CREATE TABLE `course` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci,
   `instructor_id` int(11) DEFAULT NULL,
-  `video_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `video_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

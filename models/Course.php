@@ -5,12 +5,14 @@ class Course implements JsonSerializable
     private $name;
     private $videoUrl;
     private $instructorId;
+    private $description;
 
-    public function __construct($name, $videoUrl, $instructorId)
+    public function __construct($name, $videoUrl, $instructorId,$description)
     {
         $this->name = $name;
         $this->videoUrl = $videoUrl;
         $this->instructorId = $instructorId;
+        $this->description = $description;
     }
 
     public function getId()
@@ -25,6 +27,9 @@ class Course implements JsonSerializable
     public function getInstructorId()
     { return $this->instructorId; }
 
+    public function getDespcription()
+    { return $this->description; }
+
     public function setId($id){
         $this->id = $id;
     }
@@ -35,6 +40,10 @@ class Course implements JsonSerializable
     public function setVideoUrl($videoUrl)
     { $this->videoUrl = $videoUrl; }
 
+    public function setDescription($description){
+        $this->description = $description;
+    }
+
     public function setInstructorId($instructorId)
     { $this->instructorId = $instructorId; }
 
@@ -44,12 +53,13 @@ class Course implements JsonSerializable
             'id' => $this->id,
             'name' => $this->name,
             'videoUrl' => $this->videoUrl,
-            'instructorId' => $this->instructorId
+            'instructorId' => $this->instructorId,
+            'description' => $this->description
         ];
     }
 
     public function __toString()
     {
-        return $this->id. " | " .$this->name . " | " . $this->videoUrl . " | " . $this->instructorId;
+        return $this->id. " | " .$this->name . " | " . $this->videoUrl . " | " . $this->instructorId . " | " . $this->description;
     }
 }
