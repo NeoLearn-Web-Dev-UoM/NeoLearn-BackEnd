@@ -7,10 +7,10 @@ class User implements JsonSerializable
     private $email;
     private $password;
 
-    public function __construct($email, $name, $password)
+    public function __construct( $name,$email, $password)
     {
-        $this->email = $email;
         $this->name = $name;
+        $this->email = $email;
         $this->password = $password;
     }
 
