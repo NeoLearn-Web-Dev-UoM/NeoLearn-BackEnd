@@ -130,11 +130,12 @@ class StudentController
         $jsonRequestBody = json_decode($requestBody);
 
         // Get the email and password from the request body
+        $requestName = $jsonRequestBody->name;
         $requestEmail = $jsonRequestBody->email;
         $requestPassword = $jsonRequestBody->password;
 
         // Make sure that the email and password are not empty
-        if (empty($requestEmail) || empty($requestPassword)) {
+        if (empty($requestEmail) || empty($requestPassword) || empty($requestName)) {
             // If the email or password are empty return an error message
             header('Content-Type: application/json');
             http_response_code(400);
@@ -173,7 +174,7 @@ class StudentController
 
         // Now create and save the new student
         $hashedPassword = password_hash($requestPassword, PASSWORD_DEFAULT);    // First hash the password
-        $student = new Student($requestEmail, $hashedPassword);                      // Create the student object
+        $student = new Student($requestName,$requestEmail, $hashedPassword);    // Create the student object
 
         $saved = $this->studentDatabase->save($student);
 
