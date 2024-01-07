@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f0 !important;
+
+}
+
+#logo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Adjust the percentage as needed */
+    height: auto;
+    margin-top: 15%;
+}
+
+h1 {
+    font-family: Georgia;
+    height: 25vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: auto;
+}
+
+
+
+h2 {
+    font-family: Georgia;
+    color: #006064;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 992px) {
+    #username {
+        border: 2px solid rgb(0, 96, 100);
+        padding: 3%;
+        margin-top: 5px;
+        border-radius: 5%;
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #password {
+        border: 2px solid rgb(0, 96, 100);
+        padding: 3%;
+        margin-top: 5px;
+        border-radius: 5%;
+        width: 70%;
+    }
+}
+
+#username {
+    border: 2px solid rgb(0, 96, 100);
+    padding: 3%;
+    margin-top: 5px;
+    border-radius: 5%;
+    /* width: 100%; */
+}
+
+#password {
+    border: 2px solid rgb(0, 96, 100);
+    padding: 3%;
+    margin-top: 5px;
+    border-radius: 5%;
+    /* width: 100%; */
+}
+
+.frame {
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 5px 5px 20px rgb(0, 96, 100);
+    border-radius: 15%;
+    background-color: white;
+    padding: 15%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15%;
+}
+
+
+.form-check {
+    margin-top: 5px;
+}
+
+/* δεν δουλευει */
+.form-check-input:checked~.form-check-label::before {
+    background-color: rgb(0, 96, 100) !important;
+    border-color: rgb(0, 96, 100) !important;
+}
+
+.content-field-input input {
+    width: 15rem;
+    height: 40px;
+}
+
+#signinBtn {
+    width: 15rem !important;
+    background-color: rgb(0, 96, 100) !important;
+    /* border-radius: 10% !important; */
+    margin-top: 10px !important;
+    height: 40px;
+}
+
+.form-check {
+    display: flex !important;
+    justify-content: center;
+}
+
+.form-check-label {
+    width: 10rem;
+    text-align: left;
+    margin-left: 1rem;
+}
