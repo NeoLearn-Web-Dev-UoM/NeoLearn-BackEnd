@@ -170,7 +170,7 @@ class InstructorController
 
         // Now create and save the new instructor
         $hashedPassword = password_hash($requestPassword, PASSWORD_DEFAULT);    // First hash the password
-        $instructor = new Instructor($requestEmail, $requestName, $hashedPassword);                      // Create the instructor object
+        $instructor = new Instructor($requestName, $requestEmail, $hashedPassword);                      // Create the instructor object
 
         $saved = $this->instructorDatabase->save($instructor);
 

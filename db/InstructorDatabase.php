@@ -59,7 +59,7 @@ class InstructorDatabase
         $dbInstructorPassword = $dbInstructor['password'];
 
         // Create a new User object and return it
-        $instructor = new Instructor($dbInstructorEmail, $dbInstructorName, $dbInstructorPassword);
+        $instructor = new Instructor($dbInstructorName, $dbInstructorEmail, $dbInstructorPassword);
         $instructor->setId($dbInstructorId);
 
         return $instructor;
