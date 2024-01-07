@@ -1,6 +1,25 @@
 'use strict'
 
-let loginAPI = 'http://localhost/neolearn-backend/index.php/auth/instructor/login';
+async function loginInstructor(username, password) {
+    let loginAPI = 'http://localhost/neolearn-backend/index.php/auth/instructor/login';
+
+    try {
+        return fetch(loginAPI, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "email": username,
+                "password": password,
+            }),
+            mode: 'cors'
+        });
+    }
+    catch (error) {
+        console.error('An error occurred during the fetch:', error);
+    }
+}
 
 async function submitBtn() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]')
@@ -20,33 +39,36 @@ async function submitBtn() {
         return;
     }
 
-    try {
-        const response = fetch(loginAPI, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "email": username,
-                "password": password,
-            }),
-            mode: 'cors'
-        });
+    console.log(userType);
+
+    if (userType === 'teacher') {
+        const response = await loginInstructor(username, password);
+
+        // Get the response body
+        const data = await response.json();
 
         if (response.ok) {
-            // Login successful
-            const data = await response.json();
+            let alertBox = document.getElementById('alert-login');
+            alertBox.classList.add('alert-success');
+            alertBox.innerHTML = 'Επιτυχής σύνδεση';
+            alertBox.style.display = 'block';
 
-            console.log(data);
+            // Add user to local storage
+            localStorage.setItem('user', JSON.stringify(data));
+
+            // Redirect to instructor dashboard
+            window.location.href = 'http://localhost/NeoLearn-BackEnd/frontend/teacher.html';
         }
-        else {
-            // Login failed
-            alert('Login failed');
+        else if (response.status === 401) {
+            let alertBox = document.getElementById('alert-login');
+            alertBox.classList.add('alert-danger');
+            alertBox.innerHTML = 'Λάθος κωδικός ή email';
+            alertBox.style.display = 'block';
+
+            console.log(response.body);
         }
     }
-    catch (error) {
-        console.error('An error occurred during the fetch:', error);
-    }
+
 }
 
 function getCheckboxValue(checkboxes) {
