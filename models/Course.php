@@ -27,7 +27,7 @@ class Course implements JsonSerializable
     public function getInstructorId()
     { return $this->instructorId; }
 
-    public function getDespcription()
+    public function getDescription()
     { return $this->description; }
 
     public function setId($id){

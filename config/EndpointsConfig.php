@@ -76,15 +76,17 @@ class EndpointsConfig
         // Get a course by id
         'GET /neolearn-backend/index.php/courses/search/id/{courseId}' => 'CourseController@getById',
 
+        // Get a course by instructor id
+        'GET /neolearn-backend/index.php/courses/search/instructor/{instructorId}' => 'CourseController@getByInstructorId',
+
         // Get a course by name
-        'GET /neolearn-backend/index.php/courses/search/name/{courseName}' => 'CourseController@getByName',
+        'GET /neolearn-backend/index.php/courses/search/name' => 'CourseController@getByName',
 
         // Update a course
         'PUT /neolearn-backend/index.php/courses' => 'CourseController@update',
 
         // Delete a course
         'DELETE /neolearn-backend/index.php/courses/delete/{courseId}' => 'CourseController@delete',
-
     ];
 
     // Not implemented yet

@@ -128,6 +128,7 @@ class InstructorController
         // Get the email and password from the request body
         $requestEmail = $jsonRequestBody->email;
         $requestPassword = $jsonRequestBody->password;
+        $requestName = $jsonRequestBody->name;
 
         // Make sure that the email and password are not empty
         if (empty($requestEmail) || empty($requestPassword)) {
@@ -169,7 +170,7 @@ class InstructorController
 
         // Now create and save the new instructor
         $hashedPassword = password_hash($requestPassword, PASSWORD_DEFAULT);    // First hash the password
-        $instructor = new Instructor($requestEmail, $hashedPassword);                      // Create the instructor object
+        $instructor = new Instructor($requestEmail, $requestName, $hashedPassword);                      // Create the instructor object
 
         $saved = $this->instructorDatabase->save($instructor);
 

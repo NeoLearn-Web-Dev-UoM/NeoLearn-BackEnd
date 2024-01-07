@@ -98,6 +98,8 @@ class RouterConfig
         // Adjust the regular expression to capture the instructor email - (Used for /instructors/search/email/{instructorEmail})
         $routePattern = str_replace('{instructorEmail}', '([^/]+)', $routePattern);
 
+        $routePattern = str_replace('{courseId}', '(\d+)', $routePattern);
+
         // If any more parameters are needed, add them here
 
         return $routePattern;
