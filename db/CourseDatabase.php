@@ -33,9 +33,10 @@ class CourseDatabase
         $dbCourseName = $dbCourse['name'];
         $dbCourseInstructorId = $dbCourse['instructor_id'];
         $dbCourseVideoUrl = $dbCourse['video_url'];
+        $dbCourseDescription = $dbCourse['description'];
 
         // Create a new Course object and return it
-        $course = new Course($dbCourseName, $dbCourseVideoUrl, $dbCourseInstructorId, "");
+        $course = new Course($dbCourseName, $dbCourseVideoUrl, $dbCourseInstructorId, $dbCourseDescription);
         $course->setId($dbCourseId);
 
         return $course;
