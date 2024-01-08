@@ -3,6 +3,7 @@ let currentSlide = 1;
 
 // Get the user from local storage
 let user = localStorage.getItem('user');
+let type = localStorage.getItem('userType');
 
 // ------------ DISPLAY USER NAME ------------
 
@@ -20,6 +21,9 @@ const name = user.name;
 // Display the user's name
 const nameElement = document.getElementById('user-name');
 nameElement.innerHTML = name;
+
+
+
 
 // ------------ DISPLAY COURSES ------------
 document.addEventListener('DOMContentLoaded', function () {
@@ -40,7 +44,7 @@ const searchBtn = document.getElementById('search-btn');
 // Add an event listener to the search button
 searchBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    searchCourses();
+    console.log("Clicked")
 });
 
 
@@ -66,7 +70,6 @@ function searchCourses() {
 function createCoursesElements(courses) {
     // Handle the data and generate HTML for each course
     const coursesContainer1 = document.getElementById('courses-container-1');
-    const coursesContainer2 = document.getElementById('courses-container-2');
 
     courses.forEach((course, index) => {
         const courseElement = document.createElement('div');
@@ -84,12 +87,7 @@ function createCoursesElements(courses) {
                     <hr>
                 `;
 
-        // Add the course to the appropriate container based on the slide
-        if (index % 2 === 0) {
-            coursesContainer1.appendChild(courseElement);
-        } else {
-            coursesContainer2.appendChild(courseElement);
-        }
+        coursesContainer1.appendChild(courseElement);
     });
 }
 
