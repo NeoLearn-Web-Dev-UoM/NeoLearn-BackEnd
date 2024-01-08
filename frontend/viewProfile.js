@@ -1,5 +1,31 @@
 'use strict'
 
+// Run only once when the page is loaded
+function init() {
+    if (localStorage.getItem('user') == null) {
+        window.location.href = 'welcome.html';
+    }
+}
+
+init()
+
+// Get the user from local storage
+let user = JSON.parse(localStorage.getItem('user'));
+
+// Display the user's name
+let instructorNameElement = document.getElementById('teacherName');
+instructorNameElement.innerHTML = user.name;
+
+// Display the user's email
+let instructorEmailElement = document.getElementById('teacherEmail');
+instructorEmailElement.innerHTML = user.email;
+
+// Set the user Tyoe
+let instructorTypeElement = document.getElementById('userType');
+let userType = localStorage.getItem('userType');
+console.log(userType);
+instructorTypeElement.innerHTML = userType;
+
 function edit(){
     window.location.href = "editProfile.html";
 }
