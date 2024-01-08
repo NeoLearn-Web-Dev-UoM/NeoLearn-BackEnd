@@ -66,18 +66,18 @@ function searchCourses() {
             .catch(error => console.error('Error fetching courses:', error));
 }
 
-
 function createCoursesElements(courses) {
     // Handle the data and generate HTML for each course
     const coursesContainer1 = document.getElementById('courses-container-1');
 
     courses.forEach((course, index) => {
+        console.log(course.name)
         const courseElement = document.createElement('div');
         courseElement.innerHTML = `
-                    <a class="lesson-link" onclick="openNewPage('lessonText${index + 1}', 'sourceTitle${index + 1}')">
+                    <a class="lesson-link" id="lesson-${course.id}">
                         <figure>
                             <blockquote class="blockquote">
-                                <p id="lessonText${index + 1}">${course.name}</p>
+                                <p id="lessonText-${course.id}" >${course.name}</p>
                             </blockquote>
                             <figcaption class="blockquote-footer">
                                 <cite title="Source Title" id="sourceTitle${index + 1}">${course.description}</cite>
@@ -89,6 +89,23 @@ function createCoursesElements(courses) {
 
         coursesContainer1.appendChild(courseElement);
     });
+
+    // Add event listeners to each course
+    const courseElements = document.querySelectorAll('.lesson-link');
+    courseElements.forEach(courseElement => {
+        courseElement.addEventListener('click', handleCourseClick);
+    });
+}
+
+function handleCourseClick(e) {
+    // Get the clicked course element
+    const courseElement = e.target;
+
+    // Get the id of the clicked course
+    const courseId = courseElement.id.split('-')[1];
+
+    // Open the lesson page and pass the lesson id
+    window.location.href = `lessonDescriptionTeacher.html?lessonId=${courseId}`;
 }
 
 function showSlide(slideNumber) {
@@ -111,17 +128,8 @@ function changeSlide(nextSlide) {
 // Show the initial slide
 showSlide(currentSlide);
 
-function openNewPage(lessonTextId, sourceTitleId) {
-    var lessonText = document.getElementById(lessonTextId).textContent;
-    var sourceTitle = document.getElementById(sourceTitleId).textContent;
+function openNewPage(lessonId) {
 
-    // Use unique identifiers for each link
-    var keyPrefix = 'lessonDescription_';  // Unique prefix
-    localStorage.setItem(keyPrefix + 'lessonText', lessonText);
-    localStorage.setItem(keyPrefix + 'sourceTitle', sourceTitle);
-
-    // Navigate to the new_page.html
-    window.location.href = 'lessonDescriptionTeacher.html';
 }
 
 function homeBtn() {
