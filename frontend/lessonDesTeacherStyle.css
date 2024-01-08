@@ -65,8 +65,9 @@ hr {
 
 #lesson {
     margin-top: 10px;
-    width: 50%;
+    width: 95%;
     margin-left: 3px;
+    margin-right: 1em;
     padding-left: 9px;
     align-items: center;
     background-color: whitesmoke;
@@ -75,7 +76,6 @@ hr {
     display: flex;
     flex-direction: row !important;
     color: black !important;
-
 }
 
 #deleteLesson {
@@ -131,9 +131,9 @@ hr {
     background-color: lightgray;
 }
 
-.footer {
+footer {
     text-align: center !important;
-    color: rgba(0, 0, 0, 0.5);
+    color: white;
     font-size: 15px;
     padding: 10px;
 }
