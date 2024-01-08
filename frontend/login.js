@@ -56,6 +56,9 @@ async function submitBtn() {
             // Add user to local storage
             localStorage.setItem('user', JSON.stringify(data));
 
+            // Set the user type
+            localStorage.setItem('userType', 'Teacher');
+
             // Redirect to instructor dashboard
             window.location.href = 'http://localhost/NeoLearn-BackEnd/frontend/teacher.html';
         }
