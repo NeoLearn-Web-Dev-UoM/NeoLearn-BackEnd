@@ -232,6 +232,7 @@ class InstructorController
         $requestInstructorId = $jsonRequestBody->id;
         $requestEmail = $jsonRequestBody->email;
         $requestPassword = $jsonRequestBody->password;
+        $requestName = $jsonRequestBody->name;
 
         // Check that the instructor id exists
         $existingInstructor = $this->instructorDatabase->getById($requestInstructorId);
@@ -275,7 +276,7 @@ class InstructorController
         // First hash the password
         $hashedPassword = password_hash($requestPassword, PASSWORD_DEFAULT);
 
-        $updatedInstructor = new Instructor($requestEmail, $hashedPassword);
+        $updatedInstructor = new Instructor($requestName, $requestEmail, $hashedPassword);
         $updatedInstructor->setId($requestInstructorId);
 
         $updated = $this->instructorDatabase->update($updatedInstructor);
