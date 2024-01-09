@@ -8,7 +8,7 @@ hr {
 
 .container {
     background-color: lightgray;
-    /* height: 100vh; */
+    min-height: 100vh !important;
     max-width: 70% !important;
 }
 
@@ -58,8 +58,7 @@ hr {
 
 #middle-container {
     background-color: lightgray;
-    height: 15vh !important;
-    /* padding-bottom: 7%; */
+    padding-bottom: 1em;
 }
 
 
@@ -120,7 +119,7 @@ hr {
 
 #details-container {
     margin-top: 5%;
-    height: 50vh;
+    min-height: 50vh;
     width: 80%;
     box-shadow: 5px 5px 20px rgb(0, 96, 100);
     margin-left: 3px;

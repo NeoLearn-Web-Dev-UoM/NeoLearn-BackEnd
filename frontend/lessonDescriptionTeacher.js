@@ -19,7 +19,9 @@ let lessonId = url.searchParams.get("lessonId");
 let course = await getCourseById(lessonId);
 let courseName = course.name;
 let courseDescription = course.description;
+let urlVideo = course.videoUrl;
 
+// Set the lesson details
 let courseNameElement = document.getElementById('lessonText');
 courseNameElement.innerHTML = courseName;
 
@@ -28,6 +30,10 @@ courseInstructorElement.innerHTML = "By: " + userName;
 
 let courseDescriptionElement = document.getElementById('details-lesson');
 courseDescriptionElement.innerHTML = courseDescription;
+
+// Set the iframe source
+let videoElement = document.getElementById('video-element');
+videoElement.src = urlVideo;
 
 // Handle the delete button
 let deleteBtn = document.getElementById('deleteLesson');
@@ -53,4 +59,5 @@ deleteBtn.addEventListener('click', async (e) => {
                 alert("Προέκυψε σφάλμα κατά τη διαγραφή του μαθήματος");
         }
 });
+
 
