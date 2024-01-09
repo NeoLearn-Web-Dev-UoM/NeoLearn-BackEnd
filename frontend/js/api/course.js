@@ -60,4 +60,25 @@ async function getCoursesByInstructorId(id) {
     return courses;
 }
 
-export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId };
+async function createCourse(name, desc, url, instructorId) {
+    const response = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "name": name,
+            "videoUrl": url,
+            "description": desc,
+            "instructorId": instructorId
+        }),
+    });
+    const course = await response.json();
+
+    // if the response is not ok, throw an error
+    if (!response.ok) throw new Error("Το μάθημα δεν μπόρεσε να δημιουργηθεί");
+
+    return course;
+}
+
+export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId, createCourse, };
