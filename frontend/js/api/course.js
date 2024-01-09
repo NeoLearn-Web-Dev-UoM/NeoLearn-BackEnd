@@ -9,7 +9,9 @@ async function getAllCourses() {
     });
     const courses = await response.json();
 
-    console.log(courses)
+    // if the response is not ok, throw an error
+    if (!response.ok) throw new Error("Δεν βρέθηκαν μαθήματα");
+
     return courses;
 }
 
@@ -20,14 +22,12 @@ async function deleteById(id) {
             'Content-Type': 'application/json'
         }
     });
-    const resp = await response.json();
+    const courses = await response.json();
 
     // if the response is not ok, throw an error
-    if (!response.ok) {
-        throw new Error("Το μάθημα δεν μπόρεσε να διαγραφεί");
-    }
+    if (!response.ok) throw new Error("Το μάθημα δεν μπόρεσε να διαγραφεί");
 
-    return resp;
+    return courses;
 }
 
 async function getCourseById(id) {
@@ -39,7 +39,25 @@ async function getCourseById(id) {
     });
     const course = await response.json();
 
+    // if the response is not ok, throw an error
+    if (!response.ok) throw new Error("Το μάθημα δεν βρέθηκε");
+
     return course;
 }
 
-export { getAllCourses, deleteById, getCourseById };
+async function getCoursesByInstructorId(id) {
+    const response = await fetch(BASE_URL + "/search/instructor/" + id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const courses = await response.json();
+
+    // if the response is not ok, throw an error
+    if (!response.ok) throw new Error("Δεν βρέθηκαν μαθήματα για τον συγκεκριμένο καθηγητή");
+
+    return courses;
+}
+
+export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId };
