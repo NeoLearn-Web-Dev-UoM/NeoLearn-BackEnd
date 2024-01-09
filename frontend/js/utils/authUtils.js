@@ -7,3 +7,5 @@ function logout() {
         window.location.href = 'welcome.html';
     }
 }
+
+export { logout };

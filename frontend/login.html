@@ -45,22 +45,24 @@
                                     <input type="password" id="password" placeholder="********">
                                 </div>
                             </div>
+
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="teacher"
-                                    onclick="handleCheckboxClick('teacher')">
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input class="form-check-input user-type-radio-select" type="radio" value="" id="teacher" name="userType">
+                                <label class="form-check-label" for="teacher">
                                     Εκπαιδευτικός
                                 </label>
                             </div>
+
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="student"
-                                    onclick="handleCheckboxClick('student')">
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input class="form-check-input user-type-radio-select" type="radio" value="" id="student" name="userType">
+                                <label class="form-check-label" for="teacher">
                                     Εκπαιδευόμενος
                                 </label>
                             </div>
-                            <button type="button" onclick="submitBtn()" id="signinBtn"
-                                class="btn btn-outline-light">Σύνδεση</button>
+
+                            <button type="button" id="signinBtn" class="btn btn-outline-light">
+                                Σύνδεση
+                            </button>
                         </main>
                     </form>
                 </div>
@@ -68,7 +70,11 @@
         </div>
     </div>
 
-    <script src="login.js"></script>
+    <script src="./js/api/endpoints.js" type="module"></script>
+    <script src="./js/api/instructor.js" type="module"></script>
+    <script src="./js/api/student.js" type="module"></script>
+
+    <script src="login.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-
     MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
