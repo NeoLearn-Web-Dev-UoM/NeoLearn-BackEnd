@@ -7,8 +7,12 @@ function showAlert() {
     window.location.href = 'teacher.html';
 }
 
+let userType = localStorage.getItem('userType');
+
 function homeBtn() {
-    window.location.href = 'teacher.html';
+    if (userType === 'Teacher') window.location.href = 'teacher.html';
+
+    else if (userType === 'Student') window.location.href = 'student.html';
 }
 
 

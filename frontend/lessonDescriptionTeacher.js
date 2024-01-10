@@ -1,19 +1,27 @@
 import {deleteById, getCourseById} from './js/api/course.js';
+import * as InstructorAPI from './js/api/instructor.js';
+import * as TeacherActions from './js/utils/dynamicCourseActions.js';
+
 'use strict';
 
-// Make sure the user is logged in
-if (!localStorage.getItem('user')) {
-    window.location.href = 'welcome.html';
-}
+let user = JSON.parse(localStorage.getItem('user'));
 
-let userName = JSON.parse(localStorage.getItem('user')).name;
+// Make sure the user is logged in
+if (!user) window.location.href = 'welcome.html';
+
+let userName = user.name;
+let userType = localStorage.getItem('userType');
+console.log(user)
 
 let nameTop = document.getElementById('navbarDropdown');
 nameTop.innerHTML = userName;
 
 // Get the lesson id from the url
 let url = new URL(window.location.href);
-let lessonId = url.searchParams.get("lessonId");
+let lessonId = url.searchParams.get("id");
+
+console.log(url)
+console.log(lessonId)
 
 // Get the lesson from the API
 let course = await getCourseById(lessonId);
@@ -25,8 +33,17 @@ let urlVideo = course.videoUrl;
 let courseNameElement = document.getElementById('lessonText');
 courseNameElement.innerHTML = courseName;
 
-let courseInstructorElement = document.getElementById('sourceTitle');
-courseInstructorElement.innerHTML = "By: " + userName;
+// Try to get the course instructor
+try {
+        let instructor = await InstructorAPI.getInstructorById(course.instructorId);
+        userName = instructor.name;
+
+        let courseInstructorElement = document.getElementById('sourceTitle');
+        courseInstructorElement.innerHTML = "By: " + userName;
+}
+catch (e) {
+        console.log(e);
+}
 
 let courseDescriptionElement = document.getElementById('details-lesson');
 courseDescriptionElement.innerHTML = courseDescription;
@@ -35,29 +52,73 @@ courseDescriptionElement.innerHTML = courseDescription;
 let videoElement = document.getElementById('video-element');
 videoElement.src = urlVideo;
 
+// add teacher actions if the user is a teacher
+if (userType === 'Teacher') {
+        let container = document.getElementById('course-details-video');
+        let element = TeacherActions.createTeacherElement();
+
+        let div = document.createElement('div');
+        div.innerHTML = element;
+        container.appendChild(div);
+
+        // Also remove teacher-only elements
+        let teacherOnlyElements = document.getElementsByClassName('teacher-only');
+        let teacherOnlyElementsArray = Array.from(teacherOnlyElements);
+
+        teacherOnlyElementsArray.forEach(element => {
+                element.style.display = 'block';
+        });
+}
+else if (userType === 'Student') {
+        console.log('student')
+        // Also remove teacher-only elements
+        let teacherOnlyElements = document.getElementsByClassName('teacher-only');
+        let teacherOnlyElementsArray = Array.from(teacherOnlyElements);
+
+        console.log(teacherOnlyElementsArray)
+
+        teacherOnlyElementsArray.forEach(element => {
+                element.style.display = 'none';
+        });
+
+        let myCourses = document.getElementById('my-courses');
+        myCourses.href = 'student.html';
+}
+
 // Handle the delete button
 let deleteBtn = document.getElementById('deleteLesson');
-deleteBtn.addEventListener('click', async (e) => {
+
+if (deleteBtn) {
+        deleteBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                // Ask the user to confirm the deletio
+                let msg = "Είσαι σίγουρος ότι επιθυμείς να διαγράψεις το μάθημα; (Αυτή η ενέργεια δεν μπορεί να αναιρεθεί)";
+                let deletionCancelled = !confirm(msg);
+
+                if (deletionCancelled) return;
+
+                // Delete the lesson from the API
+
+                try {
+                        await deleteById(lessonId);
+                        alert("Το μάθημα διαγράφηκε επιτυχώς");
+
+                        window.location.href = 'teacher.html';
+                } catch (error) {
+                        console.error(error);
+                        alert("Προέκυψε σφάλμα κατά τη διαγραφή του μαθήματος");
+                }
+        });
+}
+
+
+// Handle Home button
+let homeBtn = document.getElementById('homebtn');
+console.log(homeBtn)
+homeBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        // Ask the user to confirm the deletio
-        let msg = "Είσαι σίγουρος ότι επιθυμείς να διαγράψεις το μάθημα; (Αυτή η ενέργεια δεν μπορεί να αναιρεθεί)";
-        let deletionCancelled = !confirm(msg);
-
-        if (deletionCancelled) return;
-
-        // Delete the lesson from the API
-
-        try {
-                await deleteById(lessonId);
-                alert("Το μάθημα διαγράφηκε επιτυχώς");
-
-                window.location.href = 'teacher.html';
-        }
-        catch (error) {
-                console.error(error);
-                alert("Προέκυψε σφάλμα κατά τη διαγραφή του μαθήματος");
-        }
+        if (userType === 'Student') window.location.href = 'student.html';
+        else if (userType === 'Teacher') window.location.href = 'teacher.html';
 });
-
-
