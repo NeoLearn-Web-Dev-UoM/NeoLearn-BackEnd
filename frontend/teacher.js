@@ -1,6 +1,6 @@
 'use strict'
 
-import {getAllCourses, getCoursesByInstructorId} from "./js/api/course.js";
+import {getCoursesByInstructorId} from "./js/api/course.js";
 import {logout} from "./js/utils/authUtils.js";
 
 // let currentSlide = 1;
@@ -83,5 +83,5 @@ function handleCourseClick(e) {
     const courseId = courseElement.id.split('-')[1];
 
     // Open the lesson page and pass the lesson id
-    window.location.href = `lessonDescriptionTeacher.html?lessonId=${courseId}`;
+    window.location.href = `lessonDescriptionTeacher.html?id=${courseId}`;
 }
