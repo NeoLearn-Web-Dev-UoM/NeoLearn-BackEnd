@@ -105,7 +105,7 @@ async function getCoursesByName(name) {
 }
 
 async function updateCourse(id, name, desc, url, instructorId) {
-    let apiURL = 'http://localhost/neolearn-backend/index.php/courses/update/' + id;
+    let apiURL = 'http://localhost/neolearn-backend/index.php/courses';
     console.log(apiURL)
 
     const response = await fetch(apiURL, {

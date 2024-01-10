@@ -35,7 +35,10 @@ function callUpdateAPI(id, email, newPass) {
     })
         .then((response) => {
             if (response.status === 200) {
+                console.log(response.body)
                 alert("Η ενημέρωση ολοκληρώθηκε με επιτυχία! Θα μεταφερθείτε στην σελίδα του Προφίλ σας.");
+
+
                 window.location.href = "viewProfile.html";
             } else {
                 alert("Η ενημέρωση απέτυχε!");
@@ -45,6 +48,13 @@ function callUpdateAPI(id, email, newPass) {
             console.error('Error:', error);
         });
 }
+
+let updateBtn = document.getElementById("btnCreate");
+console.log(updateBtn)
+updateBtn.addEventListener("click", updateProfile);
+
+let cancelBtn = document.getElementById("btnCancel");
+cancelBtn.addEventListener("click", returnToMainPage);
 
 function updateProfile() {
     let updateMsg = "Οι πληροφορίες πρόκειται να ανανεωθούν. Είστε σίγουροι ότι θέλετε να συνεχίσετε;";
@@ -77,6 +87,10 @@ function updateProfile() {
     if (newPass === "") newPass = user.password;
 
     if (confirmUpdate) {
+        user.email = email;
+
+        localStorage.setItem("user", JSON.stringify(user));
+
         callUpdateAPI(id, email, newPass);
     }
 }
