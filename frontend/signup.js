@@ -131,7 +131,7 @@ async function signUpBtn() {
 
       // Redirect to welcome page
       window.location.href =
-        "http://localhost/NeoLearn-BackEnd/frontend/teacher.html";
+        "http://localhost/NeoLearn-BackEnd/frontend/welcome.html";
     } else if (response.status === 401) {
       let alertBox = document.getElementById("alert-login");
       alertBox.classList.add("alert-danger");
@@ -160,7 +160,7 @@ async function signUpBtn() {
 
       // Redirect to welcome page
       window.location.href =
-        "http://localhost/NeoLearn-BackEnd/frontend/student.html";
+        "http://localhost/NeoLearn-BackEnd/frontend/welcome.html";
     } else {
       let alertBox = document.getElementById("alertBox");
       alertBox.classList.add("alert-danger");
