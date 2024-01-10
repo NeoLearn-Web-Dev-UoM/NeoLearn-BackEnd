@@ -63,6 +63,27 @@ async function signUpInstructor(firstname, lastname, username, password) {
   }
 }
 
+async function signUpStudent(firstname, lastname, username, password) {
+    let signUpAPI = "http://localhost/neolearn-backend/index.php/students";
+
+    try {
+        return fetch(signUpAPI, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email: username,
+            password: password,
+            name: firstname + lastname,
+        }),
+        mode: "cors",
+        });
+    } catch (error) {
+        console.error("An error occurred during the fetch:", error);
+    }
+}
+
 async function signUpBtn() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
@@ -88,8 +109,6 @@ async function signUpBtn() {
     return;
   }
 
-  console.log(userType);
-
   if (userType === "teacher") {
     const response = await signUpInstructor(
       firstname,
@@ -112,11 +131,40 @@ async function signUpBtn() {
 
       // Redirect to welcome page
       window.location.href =
-        "http://localhost/NeoLearn-BackEnd/frontend/welcome.html";
+        "http://localhost/NeoLearn-BackEnd/frontend/teacher.html";
     } else if (response.status === 401) {
       let alertBox = document.getElementById("alert-login");
       alertBox.classList.add("alert-danger");
       alertBox.innerHTML = "Κάτι πήγε λάθος";
+      alertBox.style.display = "block";
+
+      console.log(response.body);
+    }
+  }
+  else if (userType === "student") {
+    const response = await signUpStudent(
+      firstname,
+      lastname,
+      username,
+      password
+    );
+
+    // Get the response body
+    const data = await response.json();
+
+    console.log(data)
+
+    if (response.ok) {
+      // Add user to local storage
+      localStorage.setItem("user", JSON.stringify(data));
+
+      // Redirect to welcome page
+      window.location.href =
+        "http://localhost/NeoLearn-BackEnd/frontend/student.html";
+    } else {
+      let alertBox = document.getElementById("alertBox");
+      alertBox.classList.add("alert-danger");
+      alertBox.innerHTML = data.error;
       alertBox.style.display = "block";
 
       console.log(response.body);
