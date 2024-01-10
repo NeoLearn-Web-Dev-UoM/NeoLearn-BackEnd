@@ -13,8 +13,7 @@ function createTeacherElement() {
                 <div class="col px-2" id="btns">
                     <div class="row">
                         <button 
-                            type="button" 
-                            onclick="editLessonLink()" 
+                            type="button"  
                             class="btn btn-outline" 
                             id="editLesson"
                         >

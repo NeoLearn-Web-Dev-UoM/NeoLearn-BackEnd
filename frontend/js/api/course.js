@@ -104,4 +104,30 @@ async function getCoursesByName(name) {
     return course;
 }
 
-export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId, createCourse, getCoursesByName, };
+async function updateCourse(id, name, desc, url, instructorId) {
+    let apiURL = 'http://localhost/neolearn-backend/index.php/courses/update/' + id;
+    console.log(apiURL)
+
+    const response = await fetch(apiURL, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        ,
+        body: JSON.stringify({
+            "id": id,
+            "instructorId": instructorId,
+            "name": name,
+            "videoUrl": url,
+            "description": desc
+        }),
+    });
+
+    if (!response.ok) throw new Error("Το μάθημα δεν μπόρεσε να ενημερωθεί");
+
+    const course = await response.json();
+
+    return course;
+}
+
+export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId, createCourse, getCoursesByName, updateCourse };

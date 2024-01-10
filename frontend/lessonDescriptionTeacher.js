@@ -112,6 +112,15 @@ if (deleteBtn) {
         });
 }
 
+let updateBtn = document.getElementById('editLesson');
+if (updateBtn) {
+        updateBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                window.location.href = 'editLesson.html?id=' + lessonId;
+        });
+}
+
 
 // Handle Home button
 let homeBtn = document.getElementById('homebtn');
