@@ -64,18 +64,12 @@ class CourseController
     }
 
     // Get courses by name
-    // GET /neolearn-backend/index.php/courses/search/name/
-    public function getByName()
+    // GET /neolearn-backend/index.php/courses/search/name/{CourseName}
+    public function getByName($nameDecoded)
     {
         try {
-            // Get the request body
-            $requestBody = file_get_contents('php://input');
-
-            // Parse the request body as JSON
-            $jsonRequestBody = json_decode($requestBody);
-
-            // Get the name from the request body
-            $name = $jsonRequestBody->name;
+            // Make the name normal
+            $name = urldecode($nameDecoded);
 
             $courses = $this->courseDatabase->getByName($name);
 

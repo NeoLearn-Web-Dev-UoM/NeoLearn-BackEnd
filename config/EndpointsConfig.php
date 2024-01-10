@@ -80,7 +80,7 @@ class EndpointsConfig
         'GET /neolearn-backend/index.php/courses/search/instructor/{instructorId}' => 'CourseController@getByInstructorId',
 
         // Get a course by name
-        'GET /neolearn-backend/index.php/courses/search/name' => 'CourseController@getByName',
+        'GET /neolearn-backend/index.php/courses/search/name/{courseName}' => 'CourseController@getByName',
 
         // Update a course
         'PUT /neolearn-backend/index.php/courses' => 'CourseController@update',

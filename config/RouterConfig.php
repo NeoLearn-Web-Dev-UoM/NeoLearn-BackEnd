@@ -100,7 +100,11 @@ class RouterConfig
 
         $routePattern = str_replace('{courseId}', '(\d+)', $routePattern);
 
-        // If any more parameters are needed, add them here
+         // Adjust the regular expression to capture the course name - (Used for /courses/search/name/{courseName})
+         $routePattern = str_replace('{courseName}', '([^/]+)', $routePattern);
+
+         // Adjust the regular expression to allow spaces in the course name
+         $routePattern = str_replace('{courseName}', '([^/]+)', $routePattern);
 
         return $routePattern;
     }
