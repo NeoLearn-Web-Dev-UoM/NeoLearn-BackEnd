@@ -81,4 +81,27 @@ async function createCourse(name, desc, url, instructorId) {
     return course;
 }
 
-export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId, createCourse, };
+async function getCoursesByName(name) {
+    // Encode the name
+    name = encodeURIComponent(name);
+
+    let apiURL = 'http://localhost/neolearn-backend/index.php/courses/search/name/' + name;
+    console.log(apiURL)
+
+    const response = await fetch(apiURL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const course = await response.json();
+
+    // if the response is not ok, throw an error
+    if (!response.ok) throw new Error("Το μάθημα δεν βρέθηκε");
+
+    if (course.length === 0) throw new Error("Το μάθημα δεν βρέθηκε");
+
+    return course;
+}
+
+export { getAllCourses, deleteById, getCourseById, getCoursesByInstructorId, createCourse, getCoursesByName, };

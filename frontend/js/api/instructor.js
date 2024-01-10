@@ -21,4 +21,19 @@ async function loginInstructor(username, password) {
     return data;
 }
 
-export { loginInstructor };
+async function getInstructorById(id) {
+    let response = await fetch(endpoints.instructors.getById + id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!response.ok) throw new Error('Failed to get instructor');
+
+    let data = await response.json();
+
+    return data;
+}
+
+export { loginInstructor, getInstructorById };

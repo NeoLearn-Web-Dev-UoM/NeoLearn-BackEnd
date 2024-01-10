@@ -8,6 +8,7 @@ const endpoints = {
     instructors: {
         login: BASE_URL + '/auth/instructor/login',
         signup: BASE_URL + '/instructors',
+        getById: BASE_URL + '/instructors/search/id/',
     },
 
     courses: {
