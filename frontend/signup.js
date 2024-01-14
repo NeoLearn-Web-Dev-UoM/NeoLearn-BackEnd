@@ -132,7 +132,8 @@ async function signUpBtn() {
       // Redirect to welcome page
       window.location.href =
         "http://localhost/NeoLearn-BackEnd/frontend/welcome.html";
-    } else if (response.status === 401) {
+    }
+    else if (response.status === 401) {
       let alertBox = document.getElementById("alert-login");
       alertBox.classList.add("alert-danger");
       alertBox.innerHTML = "Κάτι πήγε λάθος";
